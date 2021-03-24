@@ -2,17 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrtographicZoom : MonoBehaviour
+public class OrtographicZoomStrategy : IZoomStrategy
 {
-    // Start is called before the first frame update
-    void Start()
+    public OrtographicZoomStrategy(Camera cam, float startingZoom)
     {
-        
+        cam.orthographicSize = startingZoom;
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public void ZoomIn(Camera cam, float delta, float nearZoomLimit)
     {
-        
+        if (cam.orthographicSize == nearZoomLimit) return;
+        cam.orthographicSize = Mathf.Max(cam.orthographicSize - delta, nearZoomLimit);
     }
+
+    public void ZoomOut(Camera cam, float delta, float farZoomLimit)
+    {
+        if (cam.orthographicSize == farZoomLimit) return;
+        cam.orthographicSize = Mathf.Min(cam.orthographicSize + delta, farZoomLimit);
+    }
+
+   
 }
